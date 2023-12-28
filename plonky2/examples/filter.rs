@@ -34,17 +34,15 @@ fn main() -> Result<()> {
     let mut vals = initial_vals.clone();
     let zero = builder.zero();
     for _ in 0..N {
-        let mut moving = builder._false();
-        for i in 0..N {
+        let _ = (0..N).fold(builder._false(), |moving, i| {
             let not_match = builder.not(BoolTarget::new_unsafe(matches[i]));
-            moving = builder.or(moving, not_match);
-            matches[i] = builder._if(
-                moving,
-                if i == N - 1 { zero } else { matches[i + 1] },
-                matches[i],
-            );
-            vals[i] = builder._if(moving, if i == N - 1 { zero } else { vals[i + 1] }, vals[i]);
-        }
+            let moving = builder.or(moving, not_match);
+            let next_match = if i == N - 1 { zero } else { matches[i + 1] };
+            let next_val = if i == N - 1 { zero } else { vals[i + 1] };
+            matches[i] = builder._if(moving, next_match, matches[i]);
+            vals[i] = builder._if(moving, next_val, vals[i]);
+            moving
+        });
     }
     let final_keys = matches
         .iter()
