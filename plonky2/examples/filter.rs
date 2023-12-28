@@ -22,18 +22,17 @@ fn main() -> Result<()> {
     let query = builder.add_virtual_target();
     let initial_keys = builder.add_virtual_targets(N);
     let initial_vals = builder.add_virtual_targets(N);
-    let initial_matches = initial_keys
+    let mut matches = initial_keys
         .iter()
-        .map(|k| builder.is_equal(*k, query))
+        .map(|k| builder.is_equal(*k, query).target)
         .collect::<Vec<_>>();
-    let num_matches = initial_matches
+
+    // get num matches
+    let num_matches = matches
         .iter()
-        .fold(builder.zero(), |acc, m| builder.add(acc, m.target));
+        .fold(builder.zero(), |acc, m| builder.add(acc, *m));
+
     // shift n times
-    let mut matches = initial_matches
-        .into_iter()
-        .map(|x| x.target)
-        .collect::<Vec<_>>();
     let mut vals = initial_vals.clone();
     let zero = builder.zero();
     for _ in 0..(N - 1) {
