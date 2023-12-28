@@ -30,11 +30,14 @@ fn main() -> Result<()> {
         .iter()
         .fold(builder.zero(), |acc, m| builder.add(acc, m.target));
     // shift n times
-    let mut matches = initial_matches.iter().map(|x| x.target).collect::<Vec<_>>();
+    let mut matches = initial_matches
+        .into_iter()
+        .map(|x| x.target)
+        .collect::<Vec<_>>();
     let mut vals = initial_vals.clone();
     let zero = builder.zero();
-    for _ in 0..N {
-        let _ = (0..N).fold(builder._false(), |moving, i| {
+    for _ in 0..(N - 1) {
+        (0..N).fold(builder._false(), |moving, i| {
             let not_match = builder.not(BoolTarget::new_unsafe(matches[i]));
             let moving = builder.or(moving, not_match);
             let next_match = if i == N - 1 { zero } else { matches[i + 1] };
