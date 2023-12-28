@@ -30,11 +30,7 @@ fn main() -> Result<()> {
         .iter()
         .fold(builder.zero(), |acc, m| builder.add(acc, m.target));
     // shift n times
-    let mut matches = initial_matches
-        .iter()
-        .map(|x| x.target)
-        .collect::<Vec<_>>()
-        .clone();
+    let mut matches = initial_matches.iter().map(|x| x.target).collect::<Vec<_>>();
     let mut vals = initial_vals.clone();
     let zero = builder.zero();
     for _ in 0..N {
@@ -66,11 +62,25 @@ fn main() -> Result<()> {
     builder.register_public_inputs(&vals);
 
     let mut pw = PartialWitness::new();
-    pw.set_target(query, F::from_canonical_usize(N - 1));
+    // pw.set_target(query, F::from_canonical_usize(N - 1));
+    // pw.set_target_arr(
+    //     &initial_keys,
+    //     &(0..N)
+    //         .map(|i| F::from_canonical_usize(i))
+    //         .collect::<Vec<_>>(),
+    // );
+    // pw.set_target_arr(
+    //     &initial_vals,
+    //     &(0..N)
+    //         .map(|i| F::from_canonical_usize(i + N))
+    //         .collect::<Vec<_>>(),
+    // );
+    pw.set_target(query, F::from_canonical_usize(2));
     pw.set_target_arr(
         &initial_keys,
-        &(0..N)
-            .map(|i| F::from_canonical_usize(i))
+        &[2, 0, 2, 1, 2]
+            .iter()
+            .map(|i| F::from_canonical_usize(*i))
             .collect::<Vec<_>>(),
     );
     pw.set_target_arr(
