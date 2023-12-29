@@ -9,9 +9,9 @@ use plonky2::plonk::circuit_data::CircuitConfig;
 use plonky2::plonk::config::{GenericConfig, PoseidonGoldilocksConfig};
 // use serde::de::value::BoolDeserializer;
 
-const N: usize = 5;
-const N_LOG: usize = 7;
-const N_BIT: usize = 16;
+const N: usize = 100;
+const N_LOG: usize = 7; // number of bits for the index, should be ceil(log(N))
+const N_BIT: usize = 16; // number of bits for the values, should be ceil(log(2^16-1))
 
 fn main() -> Result<()> {
     env_logger::Builder::new()
@@ -95,25 +95,11 @@ fn main() -> Result<()> {
     builder.print_gate_counts(0);
 
     let mut pw = PartialWitness::new();
-    // pw.set_target(query, F::from_canonical_usize(N - 1));
-    // pw.set_target_arr(
-    //     &keys,
-    //     &(0..N)
-    //         .map(|i| F::from_canonical_usize(i))
-    //         .collect::<Vec<_>>(),
-    // );
-    // pw.set_target_arr(
-    //     &vals,
-    //     &(0..N)
-    //         .map(|i| F::from_canonical_usize(i + N))
-    //         .collect::<Vec<_>>(),
-    // );
-    pw.set_target(query, F::from_canonical_usize(2));
+    pw.set_target(query, F::from_canonical_usize(N - 1));
     pw.set_target_arr(
         &keys,
-        &[2, 0, 2, 1, 2]
-            .iter()
-            .map(|i| F::from_canonical_usize(*i))
+        &(0..N)
+            .map(|i| F::from_canonical_usize(i))
             .collect::<Vec<_>>(),
     );
     pw.set_target_arr(
@@ -122,6 +108,20 @@ fn main() -> Result<()> {
             .map(|i| F::from_canonical_usize(i + N))
             .collect::<Vec<_>>(),
     );
+    // pw.set_target(query, F::from_canonical_usize(2));
+    // pw.set_target_arr(
+    //     &keys,
+    //     &[2, 0, 2, 1, 2]
+    //         .iter()
+    //         .map(|i| F::from_canonical_usize(*i))
+    //         .collect::<Vec<_>>(),
+    // );
+    // pw.set_target_arr(
+    //     &vals,
+    //     &(0..N)
+    //         .map(|i| F::from_canonical_usize(i + N))
+    //         .collect::<Vec<_>>(),
+    // );
 
     let data = builder.build::<C>();
     let proof = data.prove(pw)?;
