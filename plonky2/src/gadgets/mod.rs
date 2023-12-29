@@ -3,6 +3,7 @@ pub mod arithmetic_extension;
 pub mod hash;
 pub mod interpolation;
 pub mod lookup;
+pub mod permutation_check;
 pub mod polynomial;
 pub mod random_access;
 pub mod range_check;
