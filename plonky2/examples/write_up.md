@@ -8,6 +8,7 @@ We view a tuple in the array as a key value pair, stored in two target vectors `
 ## Solution 1: Shifting the array
 
 ### Idea and Code Description
+- `plonky2/examples/filter.rs` contains the executable
 - Use the `is_eq()` gadget to check equality between the `keys` and the `query` target, producing a `matches` target vector.
 - We shift the elements of `matches` (instead of `keys` to avoid checking `is_eq` everytime) and `vals` beginning from the first unmatched indice for n-1 times, this will produce the desired filtered tuple (but the firsts of the tuples will be 1 instead of `query`)
   - For each shift, we check if there is any unmatched instance to the left or at the current position by a `moving` intermediate value. And each of the value of i-th position is updated with the value of (i+1)-th position if moving is true.
@@ -62,7 +63,7 @@ We view a tuple in the array as a key value pair, stored in two target vectors `
 
 ### Code Decsription
 - Code structure
-  - `plonky2/examples/filter_bench.rs` contains the executable
+  - `plonky2/examples/filter_perm.rs` contains the executable
   - `plonky2/src/gadgets/permutation_check.rs` contains the utility functions (e.g. `sort`, `permutation_check`)
 - The `filter_bench.rs` part contains the encoding and decoding of the tuples 
 - `sort(original_array)`
