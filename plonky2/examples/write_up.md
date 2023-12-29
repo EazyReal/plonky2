@@ -43,6 +43,7 @@ We view a tuple in the array as a key value pair, stored in two target vectors `
 [DEBUG plonky2::plonk::circuit_builder] - 15942 instances of ArithmeticGate { num_ops: 20 }
 [DEBUG plonky2::plonk::circuit_builder] Degree before blinding & padding: 16045
 [DEBUG plonky2::plonk::circuit_builder] Degree after blinding & padding: 16384
+[DEBUG plonky2::plonk::circuit_builder] Building circuit took 22.66263s
 ```
 
 --- 
@@ -95,6 +96,7 @@ We view a tuple in the array as a key value pair, stored in two target vectors `
 [DEBUG plonky2::plonk::circuit_builder] - 399 instances of BaseSumGate { num_limbs: 63 } + Base: 2
 [DEBUG plonky2::plonk::circuit_builder] Degree before blinding & padding: 613
 [DEBUG plonky2::plonk::circuit_builder] Degree after blinding & padding: 1024
+[DEBUG plonky2::plonk::circuit_builder] Building circuit took 1.2153122s
 ```
 
 - $n = 200$
