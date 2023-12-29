@@ -27,3 +27,7 @@ We view a tuple in the array as a key value pair, stored in two target vectors `
   - also, we need a stable result, there are two solutions but both may degrade performance even more
     - stable sorting network
     - add index to the sorted value (originally only 0 and 1)
+- Another idea: encode and check sorted.
+  - We can encode new_val =  (is_match|99-index|original_val) for each index to sort.
+  - Instead of using a sorting network, we can do a permutation check and verify the supplied witness vector is in decreasing order.
+  - The hardest part is the permutation check. A potential way to do it (for array A, B) is with proving product_i (x-A_i) = product_i (x-B_i) with Schwartz–Zippel lemma and Fiat-Shamir (poseidon hash is relatively cheap in Plonky2). I think some other method may be available by supplying some information (as a witness) to control a circuit to generate a permutation.
